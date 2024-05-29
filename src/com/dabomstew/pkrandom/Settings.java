@@ -39,6 +39,7 @@ import java.util.zip.CRC32;
 import com.dabomstew.pkrandom.pokemon.ExpCurve;
 import com.dabomstew.pkrandom.pokemon.GenRestrictions;
 import com.dabomstew.pkrandom.pokemon.Pokemon;
+import com.dabomstew.pkrandom.pokemon.Type;
 import com.dabomstew.pkrandom.romhandlers.Gen1RomHandler;
 import com.dabomstew.pkrandom.romhandlers.Gen2RomHandler;
 import com.dabomstew.pkrandom.romhandlers.Gen3RomHandler;
@@ -49,7 +50,7 @@ public class Settings {
 
     public static final int VERSION = Version.VERSION;
 
-    public static final int LENGTH_OF_SETTINGS_DATA = 59;
+    public static final int LENGTH_OF_SETTINGS_DATA = 60;
 
     private CustomNamesSet customNames;
 
@@ -211,6 +212,8 @@ public class Settings {
     private boolean wildLevelsModified;
     private int wildLevelModifier = 0;
     private boolean allowWildAltFormes;
+
+    private Type forcedWildType;
 
     public enum StaticPokemonMod {
         UNCHANGED, RANDOM_MATCHING, COMPLETELY_RANDOM, SIMILAR_STRENGTH
@@ -582,6 +585,14 @@ public class Settings {
         // 50 elite four unique pokemon (3 bits) + catch rate level (3 bits)
         out.write(eliteFourUniquePokemonNumber | ((minimumCatchRateLevel - 1) << 3));
 
+        // 51 forced wild type
+        if(forcedWildType == null){
+            out.write(255);
+        }
+        else {
+            out.write(forcedWildType.ordinal());
+        }
+
         try {
             writeFullLong(out, currentMiscTweaks);
         } catch (IOException e) {
@@ -877,6 +888,13 @@ public class Settings {
         settings.setEliteFourUniquePokemonNumber(data[50] & 0x7);
         settings.setMinimumCatchRateLevel(((data[50] & 0x38) >> 3) + 1);
 
+        if(data[51] == (byte)255){
+            settings.setForcedWildType(null);
+        }
+        else {
+            settings.setForcedWildType(Type.values()[data[51]]);
+        }
+
         String romName;
         if(data.length == (data[LENGTH_OF_SETTINGS_DATA - 8] & 0xFF) + LENGTH_OF_SETTINGS_DATA + 1){
             int romNameLength = data[LENGTH_OF_SETTINGS_DATA - 8] & 0xFF;
@@ -885,8 +903,8 @@ public class Settings {
         else {
             int romNameLength = data[LENGTH_OF_SETTINGS_DATA] & 0xFF;
             romName = new String(data, LENGTH_OF_SETTINGS_DATA + 1, romNameLength, "US-ASCII");
-            long codeTweaksL = (long) FileFunctions.readFullIntBigEndian(data, 51) +
-                    ((long) FileFunctions.readFullIntBigEndian(data, 55) << 32);
+            long codeTweaksL = (long) FileFunctions.readFullIntBigEndian(data, 52) +
+                    ((long) FileFunctions.readFullIntBigEndian(data, 56) << 32);
             settings.setCurrentMiscTweaks(codeTweaksL);
         }
         settings.setRomName(romName);
@@ -1880,6 +1898,10 @@ public class Settings {
     public void setAllowWildAltFormes(boolean allowWildAltFormes) {
         this.allowWildAltFormes = allowWildAltFormes;
     }
+
+    public Type getForcedWildType() { return forcedWildType; }
+
+    public void setForcedWildType(Type t) { this.forcedWildType = t; }
 
     public StaticPokemonMod getStaticPokemonMod() {
         return staticPokemonMod;

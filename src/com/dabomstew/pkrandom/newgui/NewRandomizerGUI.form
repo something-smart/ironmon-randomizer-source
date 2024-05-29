@@ -2189,7 +2189,7 @@
                 <children>
                   <component id="34243" class="javax.swing.JRadioButton" binding="wpUnchangedRadioButton" default-binding="true">
                     <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.1" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2200,13 +2200,13 @@
                   </component>
                   <hspacer id="45277">
                     <constraints>
-                      <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.1" weighty="0.0"/>
                     </constraints>
                   </hspacer>
                   <vspacer id="580fb">
                     <constraints>
-                      <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </vspacer>
@@ -2224,7 +2224,7 @@
                   </vspacer>
                   <component id="17061" class="javax.swing.JRadioButton" binding="wpRandomRadioButton" default-binding="true">
                     <constraints>
-                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2235,7 +2235,7 @@
                   </component>
                   <component id="4abec" class="javax.swing.JRadioButton" binding="wpArea1To1RadioButton">
                     <constraints>
-                      <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2246,7 +2246,7 @@
                   </component>
                   <component id="44917" class="javax.swing.JRadioButton" binding="wpGlobal1To1RadioButton">
                     <constraints>
-                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2257,7 +2257,7 @@
                   </component>
                   <grid id="ff19e" layout-manager="GridBagLayout">
                     <constraints>
-                      <grid row="1" column="2" row-span="6" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="3" row-span="6" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                       <gridbag top="0" left="0" bottom="0" right="80" weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties/>
@@ -2329,7 +2329,7 @@
                   </grid>
                   <component id="58553" class="javax.swing.JCheckBox" binding="wpUseTimeBasedEncountersCheckBox">
                     <constraints>
-                      <grid row="1" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.1" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2340,7 +2340,7 @@
                   </component>
                   <component id="31e5d" class="javax.swing.JCheckBox" binding="wpDontUseLegendariesCheckBox" default-binding="true">
                     <constraints>
-                      <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2350,7 +2350,7 @@
                   </component>
                   <component id="daaf0" class="javax.swing.JCheckBox" binding="wpSetMinimumCatchRateCheckBox">
                     <constraints>
-                      <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2361,7 +2361,7 @@
                   </component>
                   <component id="b72b8" class="javax.swing.JCheckBox" binding="wpRandomizeHeldItemsCheckBox">
                     <constraints>
-                      <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2372,7 +2372,7 @@
                   </component>
                   <component id="7e552" class="javax.swing.JCheckBox" binding="wpBanBadItemsCheckBox" default-binding="true">
                     <constraints>
-                      <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2383,7 +2383,7 @@
                   </component>
                   <component id="da56d" class="javax.swing.JCheckBox" binding="wpBalanceShakingGrassPokemonCheckBox">
                     <constraints>
-                      <grid row="6" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="6" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2394,7 +2394,7 @@
                   </component>
                   <component id="a5c09" class="javax.swing.JCheckBox" binding="wpPercentageLevelModifierCheckBox" default-binding="true">
                     <constraints>
-                      <grid row="7" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="7" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2405,7 +2405,7 @@
                   </component>
                   <component id="7e56b" class="javax.swing.JSlider" binding="wpPercentageLevelModifierSlider" default-binding="true">
                     <constraints>
-                      <grid row="8" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="8" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0" ipadx="30"/>
                     </constraints>
                     <properties>
@@ -2423,7 +2423,7 @@
                   </component>
                   <component id="f60c2" class="javax.swing.JSlider" binding="wpSetMinimumCatchRateSlider">
                     <constraints>
-                      <grid row="3" column="4" row-span="2" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="3" column="5" row-span="2" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag top="0" left="10" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2439,7 +2439,7 @@
                   </component>
                   <component id="438d0" class="javax.swing.JCheckBox" binding="wpAllowAltFormesCheckBox">
                     <constraints>
-                      <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="9" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -2448,6 +2448,45 @@
                       <toolTipText resource-bundle="com/dabomstew/pkrandom/newgui/Bundle" key="GUI.wpAllowAltFormesCheckBox.toolTipText"/>
                     </properties>
                   </component>
+                  <grid id="bde32" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none" title="Force Type"/>
+                    <children>
+                      <component id="6f774" class="javax.swing.JComboBox" binding="wpForceTypeComboBox">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <enabled value="false"/>
+                          <model>
+                            <item value="None"/>
+                            <item value="Normal"/>
+                            <item value="Fire"/>
+                            <item value="Water"/>
+                            <item value="Electric"/>
+                            <item value="Grass"/>
+                            <item value="Ice"/>
+                            <item value="Fighting"/>
+                            <item value="Poison"/>
+                            <item value="Ground"/>
+                            <item value="Flying"/>
+                            <item value="Psychic"/>
+                            <item value="Bug"/>
+                            <item value="Rock"/>
+                            <item value="Ghost"/>
+                            <item value="Dragon"/>
+                            <item value="Dark"/>
+                            <item value="Steel"/>
+                          </model>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
                 </children>
               </grid>
               <hspacer id="731f9">

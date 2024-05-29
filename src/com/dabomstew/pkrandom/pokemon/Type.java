@@ -75,4 +75,13 @@ public enum Type {
         return RomFunctions.camelCase(this.toString());
     }
 
+    public static Type getTypeWithName(String name){
+        for(Type t : Type.values()){
+            if(t.camelCase().equals(name)){
+                return t;
+            }
+        }
+        return null;
+    }
+
 }

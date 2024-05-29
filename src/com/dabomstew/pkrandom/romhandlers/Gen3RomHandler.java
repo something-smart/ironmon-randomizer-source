@@ -3252,6 +3252,43 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
             }
         }
 
+        if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0){
+            Map<Pokemon, List<Evolution>> stoneEvos = new HashMap<>();
+            for (Pokemon pkmn : pokes) {
+                if (pkmn != null) {
+                    List<Evolution> stonesTo = new ArrayList<>();
+                    for (Evolution evo : pkmn.evolutionsFrom) {
+                        if (evo.type == EvolutionType.STONE) {
+                            stonesTo.add(evo);
+                        }
+                    }
+                    if(stonesTo.size() > 0){
+                        stoneEvos.put(pkmn, stonesTo);
+                    }
+                }
+            }
+
+            for (Pokemon pkmn : stoneEvos.keySet()) {
+                if (pkmn != null) {
+                    Evolution evoToKeep = stoneEvos.get(pkmn).get(random.nextInt(stoneEvos.get(pkmn).size()));
+                    List<Evolution> toRemove = new ArrayList<>();
+                    for (Evolution evo : pkmn.evolutionsFrom) {
+                        if(stoneEvos.get(pkmn).contains(evo)) {
+                            if (evo == evoToKeep) {
+                                evo.type = EvolutionType.STONE;
+                                evo.extraInfo = Items.moonStone;
+                                addEvoUpdateStone(impossibleEvolutionUpdates, evo, itemNames[evo.extraInfo]);
+                            } else {
+                                toRemove.add(evo);
+                            }
+                        }
+                    }
+                    for(Evolution e : toRemove){
+                        pkmn.evolutionsFrom.remove(e);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -4203,6 +4240,7 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
         available |= MiscTweak.FIELD_TMS_100.getValue();
         available |= MiscTweak.REBALANCE_ENCOUNTERS.getValue();
         available |= MiscTweak.STRENGTH_SCALING.getValue();
+        available |= MiscTweak.STANDARDIZE_STONES.getValue();
         return available;
     }
 

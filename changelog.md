@@ -1,3 +1,12 @@
+Version 2.4
+
+Changed tweaks:
+- Enable Strength Scaling: Now allows starters and wild pokemon to be ones that evolve any way except friendship. Also lowers the BST threshold at lv20 from 350 to 320.
+- Standardize Stones: Now affects more pokemon that use items to evolve, plus Mantyke, and causes Eevee to evolve into a random one of its options.
+
+Added feature:
+- Force Type: Wild encounters and starters can now be forced to be a specific type.
+
 Version 2.3
 
 Added tweaks:

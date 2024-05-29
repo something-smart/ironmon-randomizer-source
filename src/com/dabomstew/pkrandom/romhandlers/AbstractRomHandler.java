@@ -65,7 +65,12 @@ public abstract class AbstractRomHandler implements RomHandler {
 
     private List<Pokemon> vanillaEvolvedPokemon;
     private List<Pokemon> vanillaNonBaseLevelEvos;
-    private List<Pokemon> under350Mons;
+    private List<Pokemon> under320Mons;
+    private final int[] bannableEvolutionItems = {
+            Items.fireStone, Items.thunderStone, Items.waterStone, Items.leafStone, Items.shinyStone, Items.duskStone,
+            Items.dawnStone, Items.ovalStone, Items.deepSeaScale, Items.deepSeaTooth, Items.dragonScale, Items.sunStone,
+            Items.upgrade, Items.protector, Items.electirizer, Items.magmarizer, Items.dubiousDisc, Items.reaperCloth
+    };
 
     /* Constructor */
 
@@ -1207,10 +1212,30 @@ public abstract class AbstractRomHandler implements RomHandler {
                         tempBanned.addAll(vanillaNonBaseLevelEvos);
                     }
                 }
+                if(settings.getForcedWildType() != null){
+                    for(Pokemon p : getPokemonInclFormes()){
+                        if(p != null && !(p.primaryType == settings.getForcedWildType()) && !(p.secondaryType == settings.getForcedWildType()) && !banned.contains(p)){
+                            tempBanned.add(p);
+                        }
+                    }
+                }
+                List<Pokemon> baseAllowed = new ArrayList<>();
+                List<Pokemon> allowed = new ArrayList<>();
+                for(Pokemon p : allowAltFormes ? mainPokemonListInclFormes : mainPokemonList){
+                    if(!tempBanned.contains(p)){
+                        baseAllowed.add(p);
+                        allowed.add(p);
+                    }
+                }
                 for (Pokemon areaPk : inArea) {
-                    Pokemon picked = pickEntirelyRandomPokemon(allowAltFormes, noLegendaries, area, tempBanned);
-                    while (areaMap.containsValue(picked)) {
-                        picked = pickEntirelyRandomPokemon(allowAltFormes, noLegendaries, area, tempBanned);
+//                    Pokemon picked = pickEntirelyRandomPokemon(allowAltFormes, noLegendaries, area, tempBanned);
+//                    while (areaMap.containsValue(picked)) {
+//                        picked = pickEntirelyRandomPokemon(allowAltFormes, noLegendaries, area, tempBanned);
+//                    }
+                    Pokemon picked = allowed.get(random.nextInt(allowed.size()));
+                    allowed.remove(picked);
+                    if(allowed.size() == 0){
+                        allowed = new ArrayList<>(baseAllowed);
                     }
                     areaMap.put(areaPk, picked);
                 }
@@ -2065,7 +2090,7 @@ public abstract class AbstractRomHandler implements RomHandler {
                         bannedList.addAll(legendaries);
                     }
                     if(tp.level >= 20 && !(forceFullyEvolved && tp.level >= forceFullyEvolvedLevel)){
-                        bannedList.addAll(under350Mons);
+                        bannedList.addAll(under320Mons);
                     }
                 }
 
@@ -4332,11 +4357,31 @@ public abstract class AbstractRomHandler implements RomHandler {
         if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0){
             banned.addAll(vanillaNonBaseLevelEvos);
         }
+        if(settings.getForcedWildType() != null){
+            for(Pokemon p : getPokemonInclFormes()){
+                if(p != null && !(p.primaryType == settings.getForcedWildType()) && !(p.secondaryType == settings.getForcedWildType()) && !banned.contains(p)){
+                    banned.add(p);
+                }
+            }
+        }
+        List<Pokemon> baseAllowed = new ArrayList<>();
+        List<Pokemon> allowed = new ArrayList<>();
+        for(Pokemon p : allowAltFormes ? mainPokemonListInclFormes : mainPokemonList){
+            if(!banned.contains(p)){
+                baseAllowed.add(p);
+                allowed.add(p);
+            }
+        }
         for (int i = 0; i < starterCount; i++) {
-            Pokemon pkmn = allowAltFormes ? randomPokemonInclFormes() : randomPokemon();
-            while (pickedStarters.contains(pkmn) || banned.contains(pkmn) || pkmn.actuallyCosmetic) {
-                // System.out.println("Prevented banned: " + pkmn.name);
-                pkmn = allowAltFormes ? randomPokemonInclFormes() : randomPokemon();
+//            Pokemon pkmn = allowAltFormes ? randomPokemonInclFormes() : randomPokemon();
+//            while (pickedStarters.contains(pkmn) || banned.contains(pkmn) || pkmn.actuallyCosmetic) {
+//                // System.out.println("Prevented banned: " + pkmn.name);
+//                pkmn = allowAltFormes ? randomPokemonInclFormes() : randomPokemon();
+//            }
+            Pokemon pkmn = allowed.get(random.nextInt(allowed.size()));
+            allowed.remove(pkmn);
+            if(allowed.size() == 0){
+                allowed = new ArrayList<>(baseAllowed);
             }
             pickedStarters.add(pkmn);
         }
@@ -4366,10 +4411,40 @@ public abstract class AbstractRomHandler implements RomHandler {
         if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0){
             banned.addAll(vanillaNonBaseLevelEvos);
         }
+        if(settings.getForcedWildType() != null){
+            for(Pokemon p : getPokemonInclFormes()){
+                if(p != null && !(p.primaryType == settings.getForcedWildType()) && !(p.secondaryType == settings.getForcedWildType()) && !banned.contains(p)){
+                    banned.add(p);
+                }
+            }
+        }
+        List<Pokemon> baseAllowed = new ArrayList<>();
+        List<Pokemon> allowed = new ArrayList<>();
+        for(Pokemon p : allowAltFormes ? mainPokemonListInclFormes : mainPokemonList){
+            if(!banned.contains(p)){
+                if (p != null && p.evolutionsTo.size() == 0 && p.evolutionsFrom.size() > 0) {
+                    // Potential candidate
+                    for (Evolution ev : p.evolutionsFrom) {
+                        // If any of the targets here evolve, the original
+                        // Pokemon has 2+ stages.
+                        if (ev.to.evolutionsFrom.size() > 0) {
+                            baseAllowed.add(p);
+                            allowed.add(p);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         for (int i = 0; i < starterCount; i++) {
-            Pokemon pkmn = random2EvosPokemon(allowAltFormes);
-            while (pickedStarters.contains(pkmn) || banned.contains(pkmn)) {
-                pkmn = random2EvosPokemon(allowAltFormes);
+//            Pokemon pkmn = random2EvosPokemon(allowAltFormes);
+//            while (pickedStarters.contains(pkmn) || banned.contains(pkmn)) {
+//                pkmn = random2EvosPokemon(allowAltFormes);
+//            }
+            Pokemon pkmn = allowed.get(random.nextInt(allowed.size()));
+            allowed.remove(pkmn);
+            if(allowed.size() == 0){
+                allowed = new ArrayList<>(baseAllowed);
             }
             pickedStarters.add(pkmn);
         }
@@ -5453,6 +5528,11 @@ public abstract class AbstractRomHandler implements RomHandler {
         if((settings.getCurrentMiscTweaks() & MiscTweak.REVERT_BERRIES.getValue()) > 0) {
             possibleItems.banRange(Items.figyBerry, 54);
         }
+        if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
+            for (int i : bannableEvolutionItems) {
+                possibleItems.banSingles(i);
+            }
+        }
         for (Pokemon pk : pokemon) {
             if (pk.guaranteedHeldItem == -1 && pk.commonHeldItem == -1 && pk.rareHeldItem == -1
                     && pk.darkGrassHeldItem == -1) {
@@ -5558,6 +5638,11 @@ public abstract class AbstractRomHandler implements RomHandler {
         if((settings.getCurrentMiscTweaks() & MiscTweak.REVERT_BERRIES.getValue()) > 0) {
             possibleItems.banRange(Items.figyBerry, 54);
         }
+        if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
+            for (int i : bannableEvolutionItems) {
+                possibleItems.banSingles(i);
+            }
+        }
         for (int i = 0; i < oldHeldItems.size(); i++) {
             newHeldItems.add(possibleItems.randomItem(this.random));
         }
@@ -5586,6 +5671,11 @@ public abstract class AbstractRomHandler implements RomHandler {
 
         if((settings.getCurrentMiscTweaks() & MiscTweak.REVERT_BERRIES.getValue()) > 0) {
             possibleItems.banRange(Items.figyBerry, 54);
+        }
+        if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
+            for (int i : bannableEvolutionItems) {
+                possibleItems.banSingles(i);
+            }
         }
 
         List<Integer> currentItems = this.getRegularFieldItems();
@@ -5855,17 +5945,18 @@ public abstract class AbstractRomHandler implements RomHandler {
     public void populateVanillaEvoInfo(){
         vanillaEvolvedPokemon = new ArrayList<>();
         vanillaNonBaseLevelEvos = new ArrayList<>();
-        under350Mons = new ArrayList<>();
+        under320Mons = new ArrayList<>();
         for(Pokemon p : getPokemon()){
             if(p != null){
-                if(p.bstForPowerLevels() < 350){
-                    under350Mons.add(p);
+                if(p.bstForPowerLevels() < 320){
+                    under320Mons.add(p);
                 }
                 boolean baseLevelEvo = false;
                 if(p.evolutionsFrom.size() > 0){
                     if(p.evolutionsTo.size() == 0){
                         for(Evolution e : p.evolutionsFrom){
-                            if(e.type == EvolutionType.LEVEL){
+                            if(e.type != EvolutionType.HAPPINESS && e.type != EvolutionType.HAPPINESS_DAY &&
+                                    e.type != EvolutionType.HAPPINESS_NIGHT){
                                 baseLevelEvo = true;
                                 break;
                             }
@@ -6361,7 +6452,9 @@ public abstract class AbstractRomHandler implements RomHandler {
         if (currentItems == null) return;
         for (Shop shop: currentItems.values()) {
             for (int i = 0; i < shop.items.size(); i++) {
-                if(shop.items.get(i) == Items.mail1){ // Grass Mail
+                if((this.generationOfPokemon() == 4 && shop.items.get(i) == Items.mail1) || // Grass Mail
+                        (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.harborMail) ||
+                        (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.retroMail)){
                     shop.items.remove(i);
                     shop.items.add(i, Items.moonStone);
                 }
@@ -6407,6 +6500,11 @@ public abstract class AbstractRomHandler implements RomHandler {
         ItemList possibleItems = banBadItems ? this.getNonBadItems() : this.getAllowedItems();
         if((settings.getCurrentMiscTweaks() & MiscTweak.REVERT_BERRIES.getValue()) > 0) {
             possibleItems.banRange(Items.figyBerry, 54);
+        }
+        if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
+            for (int i : bannableEvolutionItems) {
+                possibleItems.banSingles(i);
+            }
         }
         if (banRegularShopItems) {
             possibleItems.banSingles(this.getRegularShopItems().stream().mapToInt(Integer::intValue).toArray());
@@ -6515,6 +6613,11 @@ public abstract class AbstractRomHandler implements RomHandler {
         ItemList possibleItems = banBadItems ? this.getNonBadItems() : this.getAllowedItems();
         if((settings.getCurrentMiscTweaks() & MiscTweak.REVERT_BERRIES.getValue()) > 0) {
             possibleItems.banRange(Items.figyBerry, 54);
+        }
+        if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
+            for (int i : bannableEvolutionItems) {
+                possibleItems.banSingles(i);
+            }
         }
         List<PickupItem> currentItems = this.getPickupItems();
         List<PickupItem> newItems = new ArrayList<>();

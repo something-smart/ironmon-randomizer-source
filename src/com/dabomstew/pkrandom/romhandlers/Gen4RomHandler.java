@@ -4390,15 +4390,39 @@ public class Gen4RomHandler extends AbstractDSRomHandler {
         }
 
         if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0){
+            Map<Pokemon, List<Evolution>> stoneEvos = new HashMap<>();
             for (Pokemon pkmn : pokes) {
                 if (pkmn != null) {
-                    extraEvolutions.clear();
+                    List<Evolution> stonesTo = new ArrayList<>();
                     for (Evolution evo : pkmn.evolutionsFrom) {
-                        if (evo.type == EvolutionType.STONE || evo.type == EvolutionType.LEVEL_ITEM_DAY || evo.type == EvolutionType.LEVEL_ITEM_NIGHT) {
-                            evo.type = EvolutionType.STONE;
-                            evo.extraInfo = Items.moonStone;
-                            addEvoUpdateStone(impossibleEvolutionUpdates, evo, itemNames.get(evo.extraInfo));
+                        if (evo.type == EvolutionType.STONE || evo.type == EvolutionType.LEVEL_ITEM_DAY || evo.type == EvolutionType.LEVEL_ITEM_NIGHT ||
+                        evo.type == EvolutionType.STONE_FEMALE_ONLY || evo.type == EvolutionType.STONE_MALE_ONLY || evo.type == EvolutionType.LEVEL_WITH_OTHER) {
+                            stonesTo.add(evo);
                         }
+                    }
+                    if(stonesTo.size() > 0){
+                        stoneEvos.put(pkmn, stonesTo);
+                    }
+                }
+            }
+
+            for (Pokemon pkmn : stoneEvos.keySet()) {
+                if (pkmn != null) {
+                    Evolution evoToKeep = stoneEvos.get(pkmn).get(random.nextInt(stoneEvos.get(pkmn).size()));
+                    List<Evolution> toRemove = new ArrayList<>();
+                    for (Evolution evo : pkmn.evolutionsFrom) {
+                        if(stoneEvos.get(pkmn).contains(evo)) {
+                            if (evo == evoToKeep) {
+                                evo.type = EvolutionType.STONE;
+                                evo.extraInfo = Items.moonStone;
+                                addEvoUpdateStone(impossibleEvolutionUpdates, evo, itemNames.get(evo.extraInfo));
+                            } else {
+                                toRemove.add(evo);
+                            }
+                        }
+                    }
+                    for(Evolution e : toRemove){
+                        pkmn.evolutionsFrom.remove(e);
                     }
                 }
             }
