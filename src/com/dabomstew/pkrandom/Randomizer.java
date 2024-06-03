@@ -788,15 +788,15 @@ public class Randomizer {
             List<MoveLearnt> data = moveData.get(pkmn.number);
             for (MoveLearnt ml : data) {
                 try {
-                    if (ml.level == 0) {
-                        sb.append("Learned upon evolution: ")
-                                .append(moves.get(ml.move).name).append(System.getProperty("line.separator"));
-                    } else {
+//                    if (ml.level == 0) {
+//                        sb.append("Learned upon evolution: ")
+//                                .append(moves.get(ml.move).name).append(System.getProperty("line.separator"));
+//                    } else {
                         sb.append("Level ")
                                 .append(String.format("%-2d", ml.level))
                                 .append(": ")
                                 .append(moves.get(ml.move).name).append(System.getProperty("line.separator"));
-                    }
+//                    }
                 } catch (NullPointerException ex) {
                     sb.append("invalid move at level").append(ml.level);
                 }

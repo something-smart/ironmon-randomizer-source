@@ -1043,7 +1043,7 @@
                     <properties>
                       <enabled value="false"/>
                       <majorTickSpacing value="10"/>
-                      <maximum value="50"/>
+                      <maximum value="60"/>
                       <minimum value="-50"/>
                       <minorTickSpacing value="2"/>
                       <paintLabels value="true"/>
@@ -1639,7 +1639,7 @@
                     <properties>
                       <enabled value="false"/>
                       <majorTickSpacing value="10"/>
-                      <maximum value="50"/>
+                      <maximum value="60"/>
                       <minimum value="-50"/>
                       <minorTickSpacing value="2"/>
                       <paintLabels value="true"/>
@@ -2100,7 +2100,7 @@
                     <properties>
                       <enabled value="false"/>
                       <majorTickSpacing value="10"/>
-                      <maximum value="50"/>
+                      <maximum value="60"/>
                       <minimum value="-50"/>
                       <minorTickSpacing value="2"/>
                       <paintLabels value="true"/>
@@ -2411,7 +2411,7 @@
                     <properties>
                       <enabled value="false"/>
                       <majorTickSpacing value="10"/>
-                      <maximum value="50"/>
+                      <maximum value="60"/>
                       <minimum value="-50"/>
                       <minorTickSpacing value="2"/>
                       <paintLabels value="true"/>
@@ -2482,6 +2482,7 @@
                             <item value="Dragon"/>
                             <item value="Dark"/>
                             <item value="Steel"/>
+                            <item value="Fairy"/>
                           </model>
                         </properties>
                       </component>

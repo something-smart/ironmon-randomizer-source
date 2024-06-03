@@ -58,7 +58,6 @@ public enum Type {
             case 1:
                 return GEN1;
             case 2:
-            case 3:
             case 4:
             case 5:
                 return GEN2THROUGH5;

@@ -2784,7 +2784,7 @@ public class NewRandomizerGUI {
             peChangeImpossibleEvosCheckBox.setEnabled(true);
             peMakeEvolutionsEasierCheckBox.setEnabled(true);
             peRemoveTimeBasedEvolutionsCheckBox.setEnabled(true);
-            peAllowAltFormesCheckBox.setVisible(pokemonGeneration >= 7);
+            peAllowAltFormesCheckBox.setVisible(pokemonGeneration >= 7 || pokemonGeneration == 3);
 
             // Starters, Statics & Trades
 

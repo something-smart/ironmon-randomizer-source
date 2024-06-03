@@ -1554,9 +1554,9 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
             if (romEntry.romCode.charAt(3) != 'J' && romEntry.romCode.charAt(3) != 'B') {
                 // Update PROF. Oak's descriptions for each starter
                 // First result for each STARTERNAME is the text we need
-                List<Integer> bulbasaurFoundTexts = RomFunctions.search(rom, translateString(pokes[Gen3Constants.frlgBaseStarter1].name.toUpperCase()));
-                List<Integer> charmanderFoundTexts = RomFunctions.search(rom, translateString(pokes[Gen3Constants.frlgBaseStarter2].name.toUpperCase()));
-                List<Integer> squirtleFoundTexts = RomFunctions.search(rom, translateString(pokes[Gen3Constants.frlgBaseStarter3].name.toUpperCase()));
+                List<Integer> bulbasaurFoundTexts = RomFunctions.search(rom, 0xA000D0, 0xA7FFFF, translateString(pokes[Gen3Constants.frlgBaseStarter1].name.toUpperCase()));
+                List<Integer> charmanderFoundTexts = RomFunctions.search(rom, 0xA000D0, 0xA7FFFF, translateString(pokes[Gen3Constants.frlgBaseStarter2].name.toUpperCase()));
+                List<Integer> squirtleFoundTexts = RomFunctions.search(rom, 0xA000D0, 0xA7FFFF, translateString(pokes[Gen3Constants.frlgBaseStarter3].name.toUpperCase()));
                 writeFRLGStarterText(bulbasaurFoundTexts, newStarters.get(0), "you want to go with\\nthe ");
                 writeFRLGStarterText(charmanderFoundTexts, newStarters.get(1), "you’re claiming the\\n");
                 writeFRLGStarterText(squirtleFoundTexts, newStarters.get(2), "you’ve decided on the\\n");
@@ -3121,8 +3121,8 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
         for (int i = 1; i <= numRealPokemon; i++) {
             Pokemon pk = pokemonList.get(i);
             int idx = pokedexToInternal[pk.number];
-            int evoOffset = baseOffset + (idx) * 0x28;
-            for (int j = 0; j < 5; j++) {
+            int evoOffset = baseOffset + (idx) * 0x40;
+            for (int j = 0; j < 8; j++) {
                 int method = readWord(evoOffset + j * 8);
                 int evolvingTo = readWord(evoOffset + j * 8 + 4);
                 if (method >= 1 && method <= Gen3Constants.evolutionMethodCount && evolvingTo >= 1
@@ -3153,7 +3153,7 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
         for (int i = 1; i <= numRealPokemon; i++) {
             Pokemon pk = pokemonList.get(i);
             int idx = pokedexToInternal[pk.number];
-            int evoOffset = baseOffset + (idx) * 0x28;
+            int evoOffset = baseOffset + (idx) * 0x40;
             int evosWritten = 0;
             for (Evolution evo : pk.evolutionsFrom) {
                 writeWord(evoOffset, evo.type.toIndex(3));
@@ -3162,11 +3162,11 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
                 writeWord(evoOffset + 6, 0);
                 evoOffset += 8;
                 evosWritten++;
-                if (evosWritten == 5) {
+                if (evosWritten == 8) {
                     break;
                 }
             }
-            while (evosWritten < 5) {
+            while (evosWritten < 8) {
                 writeWord(evoOffset, 0);
                 writeWord(evoOffset + 2, 0);
                 writeWord(evoOffset + 4, 0);
@@ -3717,20 +3717,20 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
         // FRLG
         if (romEntry.romType == Gen3Constants.RomType_FRLG) {
             // intro sprites : first 255 only due to size
-            Pokemon introPk = randomPokemonLimited(255, false);
-            if (introPk == null) {
-                return;
-            }
-            int introPokemon = pokedexToInternal[introPk.number];
-            int frontSprites = romEntry.getValue("FrontSprites");
-            int palettes = romEntry.getValue("PokemonPalettes");
-
-            rom[romEntry.getValue("IntroCryOffset")] = (byte) introPokemon;
-            rom[romEntry.getValue("IntroOtherOffset")] = (byte) introPokemon;
-
-            int spriteBase = romEntry.getValue("IntroSpriteOffset");
-            writePointer(spriteBase, frontSprites + introPokemon * 8);
-            writePointer(spriteBase + 4, palettes + introPokemon * 8);
+//            Pokemon introPk = randomPokemonLimited(255, false);
+//            if (introPk == null) {
+//                return;
+//            }
+//            int introPokemon = pokedexToInternal[introPk.number];
+//            int frontSprites = romEntry.getValue("FrontSprites");
+//            int palettes = romEntry.getValue("PokemonPalettes");
+//
+//            rom[romEntry.getValue("IntroCryOffset")] = (byte) introPokemon;
+//            rom[romEntry.getValue("IntroOtherOffset")] = (byte) introPokemon;
+//
+//            int spriteBase = romEntry.getValue("IntroSpriteOffset");
+//            writePointer(spriteBase, frontSprites + introPokemon * 8);
+//            writePointer(spriteBase + 4, palettes + introPokemon * 8);
         } else if (romEntry.romType == Gen3Constants.RomType_Ruby || romEntry.romType == Gen3Constants.RomType_Sapp) {
             // intro sprites : any pokemon in the range 0-510 except bulbasaur
             int introPokemon = pokedexToInternal[randomPokemon().number];
@@ -4282,13 +4282,13 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
         if (romEntry.getValue("CatchingTutorialOpponentMonOffset") > 0) {
             int oppOffset = romEntry.getValue("CatchingTutorialOpponentMonOffset");
             if (romEntry.romType == Gen3Constants.RomType_FRLG) {
-                Pokemon opponent = randomPokemonLimited(255, true);
-                if (opponent != null) {
-
-                    int oppValue = pokedexToInternal[opponent.number];
-                    rom[oppOffset] = (byte) oppValue;
-                    rom[oppOffset + 1] = Gen3Constants.gbaSetRxOpcode | Gen3Constants.gbaR1;
-                }
+//                Pokemon opponent = randomPokemonLimited(255, true);
+//                if (opponent != null) {
+//
+//                    int oppValue = pokedexToInternal[opponent.number];
+//                    rom[oppOffset] = (byte) oppValue;
+//                    rom[oppOffset + 1] = Gen3Constants.gbaSetRxOpcode | Gen3Constants.gbaR1;
+//                }
             } else {
                 Pokemon opponent = randomPokemonLimited(510, true);
                 if (opponent != null) {

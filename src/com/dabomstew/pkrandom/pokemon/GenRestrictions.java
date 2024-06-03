@@ -30,7 +30,7 @@ import java.util.Set;
 
 public class GenRestrictions {
 
-    public boolean allow_gen1, allow_gen2, allow_gen3, allow_gen4, allow_gen5, allow_gen6, allow_gen7;
+    public boolean allow_gen1, allow_gen2, allow_gen3, allow_gen4, allow_gen5, allow_gen6, allow_gen7, allow_gen8, allow_gen9, allow_mega, allow_eternamax, allow_regional_forms;
     public boolean allow_evolutionary_relatives;
 
     public GenRestrictions() {
@@ -44,37 +44,48 @@ public class GenRestrictions {
         allow_gen5 = (state & 16) > 0;
         allow_gen6 = (state & 32) > 0;
         allow_gen7 = (state & 64) > 0;
-        allow_evolutionary_relatives = (state & 128) > 0;
+        allow_gen8 = (state & 128) > 0;
+        allow_gen9 = (state & 256) > 0;
+        allow_mega = (state & 512) > 0;
+        allow_eternamax = (state & 1024) > 0;
+        allow_regional_forms = (state & 2048) > 0;
+        allow_evolutionary_relatives = (state & 4192) > 0;
     }
 
     public boolean nothingSelected() {
-        return !allow_gen1 && !allow_gen2 && !allow_gen3 && !allow_gen4 && !allow_gen5 && !allow_gen6 && !allow_gen7;
+        return !allow_gen1 && !allow_gen2 && !allow_gen3 && !allow_gen4 && !allow_gen5 && !allow_gen6 && !allow_gen7 && !allow_gen8 && !allow_gen9 && !allow_mega && !allow_eternamax && !allow_regional_forms;
     }
 
     public int toInt() {
-        return makeIntSelected(allow_gen1, allow_gen2, allow_gen3, allow_gen4, allow_gen5, allow_gen6, allow_gen7,
-                allow_evolutionary_relatives);
+        return makeIntSelected(allow_gen1, allow_gen2, allow_gen3, allow_gen4, allow_gen5, allow_gen6, allow_gen7, allow_gen8, allow_gen9,
+                allow_mega, allow_eternamax, allow_regional_forms, allow_evolutionary_relatives);
     }
 
     public void limitToGen(int generation) {
-        if (generation < 2) {
-            allow_gen2 = false;
-        }
-        if (generation < 3) {
-            allow_gen3 = false;
-        }
-        if (generation < 4) {
-            allow_gen4 = false;
-        }
-        if (generation < 5) {
-            allow_gen5 = false;
-        }
-        if (generation < 6) {
-            allow_gen6 = false;
-        }
-        if (generation < 7) {
-            allow_gen7 = false;
-        }
+        //if (generation < 2) {
+        //    allow_gen2 = false;
+        //}
+        //if (generation < 3) {
+        //    allow_gen3 = false;
+        //}
+        //if (generation < 4) {
+        //    allow_gen4 = false;
+        //}
+        //if (generation < 5) {
+        //    allow_gen5 = false;
+        //}
+        //if (generation < 6) {
+        //    allow_gen6 = false;
+        //}
+        //if (generation < 7) {
+        //    allow_gen7 = false;
+        //}
+        //if (generation < 8) {
+        //    allow_gen8 = false;
+        //}
+        //if (generation < 9) {
+        //    allow_gen9 = false;
+        //}
     }
 
     public boolean allowTrainerSwapMegaEvolvables(boolean isXY, boolean isTypeThemedTrainers) {
