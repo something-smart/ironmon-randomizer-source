@@ -64,6 +64,7 @@ public abstract class AbstractRomHandler implements RomHandler {
     boolean CHAOS = false;
 
     private List<Pokemon> vanillaEvolvedPokemon;
+    private List<Pokemon> vanillaUnevolvedPokemon;
     private List<Pokemon> vanillaNonBaseLevelEvos;
     private List<Pokemon> under320Mons;
     private List<Pokemon> over580Mons;
@@ -2200,6 +2201,9 @@ public abstract class AbstractRomHandler implements RomHandler {
                     if(tp.level < forceUnevolvedLevel) {
                         bannedList.addAll(vanillaEvolvedPokemon);
                     }
+                    else{
+                        bannedList.addAll(vanillaUnevolvedPokemon);
+                    }
                     if(tp.level < 40){
                         bannedList.addAll(over580Mons);
                     }
@@ -2220,15 +2224,6 @@ public abstract class AbstractRomHandler implements RomHandler {
                         includeFormes,
                         banIrregularAltFormes
                 );
-                if(newPK.bstForPowerLevels() >= 580){
-                    System.out.println(newPK.name);
-                    for(Pokemon p : bannedList){
-                        System.out.print(p.name + ", ");
-                    }
-                    System.out.println();
-                    System.out.println(tp.level);
-                    System.out.println(t.index);
-                }
 
                 // Chosen Pokemon is locked in past here
                 if (distributionSetting || (mainPlaythroughSetting && mainPlaythroughTrainers.contains(t.index))) {
@@ -6106,12 +6101,13 @@ public abstract class AbstractRomHandler implements RomHandler {
 
     public void populateVanillaEvoInfo(){
         vanillaEvolvedPokemon = new ArrayList<>();
+        vanillaUnevolvedPokemon = new ArrayList<>();
         vanillaNonBaseLevelEvos = new ArrayList<>();
         under320Mons = new ArrayList<>();
         over580Mons = new ArrayList<>();
         for(Pokemon p : getPokemon()){
             if(p != null){
-                System.out.println(p.name + ": " + p.bstForPowerLevels());
+                // System.out.println(p.name + ": " + p.bstForPowerLevels());
                 if(p.bstForPowerLevels() < 320){
                     under320Mons.add(p);
                 }
@@ -6120,6 +6116,7 @@ public abstract class AbstractRomHandler implements RomHandler {
                 }
                 boolean baseLevelEvo = false;
                 if(p.evolutionsFrom.size() > 0){
+                    vanillaUnevolvedPokemon.add(p);
                     if(p.evolutionsTo.size() == 0){
                         for(Evolution e : p.evolutionsFrom){
                             if(e.type != EvolutionType.HAPPINESS && e.type != EvolutionType.HAPPINESS_DAY &&
