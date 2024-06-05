@@ -71,7 +71,7 @@ public abstract class AbstractRomHandler implements RomHandler {
     private final int[] bannableEvolutionItems = {
             Gen3Items.fireStone, Gen3Items.thunderstone, Gen3Items.waterStone, Gen3Items.leafStone, Gen3Items.shinyStone, Gen3Items.duskStone,
             Gen3Items.dawnStone,  Gen3Items.deepSeaScale, Gen3Items.deepSeaTooth, Gen3Items.dragonScale, Gen3Items.sunStone,
-            Gen3Items.upGrade, Gen3Items.razorClaw, Gen3Items.razorFang, Gen3Items.iceStone, Gen3Items.dubiousDisc
+            Gen3Items.upGrade, Gen3Items.razorClaw, Gen3Items.razorFang, Gen3Items.iceStone, Gen3Items.dubiousDisc, Gen3Items.linkingCord
     };
 
     /* Constructor */
@@ -6224,6 +6224,11 @@ public abstract class AbstractRomHandler implements RomHandler {
 
             for (Pokemon fromPK : pokemonPool) {
                 List<Evolution> oldEvos = originalEvos.get(fromPK);
+                int bstTarget = 0;
+                if(fromPK.bstForPowerLevels() <= 450 && oldEvos.size() == 0){
+                    oldEvos.add(null);
+                    bstTarget = fromPK.bstForPowerLevels() + 100;
+                }
                 for (Evolution ev : oldEvos) {
                     // Pick a Pokemon as replacement
                     replacements.clear();
@@ -6343,7 +6348,12 @@ public abstract class AbstractRomHandler implements RomHandler {
                         picked = replacements.get(0);
                         alreadyPicked.add(picked);
                     } else if (similarStrength) {
-                        picked = pickEvoPowerLvlReplacement(replacements, ev.to);
+                        if(ev == null){
+                            picked = pickEvoPowerLvlReplacement(replacements, bstTarget);
+                        }
+                        else {
+                            picked = pickEvoPowerLvlReplacement(replacements, ev.to);
+                        }
                         alreadyPicked.add(picked);
                     } else {
                         picked = replacements.get(this.random.nextInt(replacements.size()));
@@ -6351,7 +6361,13 @@ public abstract class AbstractRomHandler implements RomHandler {
                     }
 
                     // Step 4: add it to the new evos pool
-                    Evolution newEvo = new Evolution(fromPK, picked, ev.carryStats, ev.type, ev.extraInfo);
+                    Evolution newEvo;
+                    if(ev == null){
+                        newEvo = new Evolution(fromPK, picked, true , EvolutionType.LEVEL, picked.bstForPowerLevels() / 10);
+                    }
+                    else {
+                        newEvo = new Evolution(fromPK, picked, ev.carryStats, ev.type, ev.extraInfo);
+                    }
                     boolean checkCosmetics = true;
                     if (picked.formeNumber > 0) {
                         newEvo.forme = picked.formeNumber;
@@ -6952,8 +6968,12 @@ public abstract class AbstractRomHandler implements RomHandler {
         // start with within 10% and add 5% either direction till we find
         // something
         int currentBST = current.bstForPowerLevels();
-        int minTarget = currentBST - currentBST / 10;
-        int maxTarget = currentBST + currentBST / 10;
+        return pickEvoPowerLvlReplacement(pokemonPool, currentBST);
+    }
+
+    private Pokemon pickEvoPowerLvlReplacement(List<Pokemon> pokemonPool, int bstTarget){
+        int minTarget = bstTarget - bstTarget / 10;
+        int maxTarget = bstTarget + bstTarget / 10;
         List<Pokemon> canPick = new ArrayList<>();
         List<Pokemon> emergencyPick = new ArrayList<>();
         int expandRounds = 0;
@@ -6970,8 +6990,8 @@ public abstract class AbstractRomHandler implements RomHandler {
             if (expandRounds >= 2 && canPick.isEmpty()) {
                 canPick.addAll(emergencyPick);
             }
-            minTarget -= currentBST / 20;
-            maxTarget += currentBST / 20;
+            minTarget -= bstTarget / 20;
+            maxTarget += bstTarget / 20;
             expandRounds++;
         }
         return canPick.get(this.random.nextInt(canPick.size()));
