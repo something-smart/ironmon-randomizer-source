@@ -68,6 +68,7 @@ public abstract class AbstractRomHandler implements RomHandler {
     private List<Pokemon> vanillaNonBaseLevelEvos;
     private List<Pokemon> under320Mons;
     private List<Pokemon> over580Mons;
+    private List<Pokemon> gainedBonusEvolution = new ArrayList<>();
     private final int[] bannableEvolutionItems = {
             Gen3Items.fireStone, Gen3Items.thunderstone, Gen3Items.waterStone, Gen3Items.leafStone, Gen3Items.shinyStone, Gen3Items.duskStone,
             Gen3Items.dawnStone,  Gen3Items.deepSeaScale, Gen3Items.deepSeaTooth, Gen3Items.dragonScale, Gen3Items.sunStone,
@@ -2149,7 +2150,7 @@ public abstract class AbstractRomHandler implements RomHandler {
                 List<Pokemon> pokemonOfType = includeFormes ? pokemonOfTypeInclFormes(typeForTrainer, noLegendaries) :
                         pokemonOfType(typeForTrainer, noLegendaries);
                 for (Pokemon pk : pokemonOfType) {
-                    if (!pokemonOfType.contains(fullyEvolve(pk, t.index))) {
+                    if (!pokemonOfType.contains(fullyEvolve(pk, t.index, 50))) {
                         evolvesIntoTheWrongType.add(pk);
                     }
                 }
@@ -2390,7 +2391,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         for (Trainer t : currentTrainers) {
             for (TrainerPokemon tp : t.pokemon) {
                 if (tp.level >= minLevel) {
-                    Pokemon newPokemon = fullyEvolve(tp.pokemon, t.index);
+                    Pokemon newPokemon = fullyEvolve(tp.pokemon, t.index, tp.level);
                     if (newPokemon != tp.pokemon) {
                         tp.pokemon = newPokemon;
                         setFormeForTrainerPokemon(tp, newPokemon);
@@ -6225,9 +6226,10 @@ public abstract class AbstractRomHandler implements RomHandler {
             for (Pokemon fromPK : pokemonPool) {
                 List<Evolution> oldEvos = originalEvos.get(fromPK);
                 int bstTarget = 0;
-                if(fromPK.bstForPowerLevels() <= 450 && oldEvos.size() == 0){
+                if(fromPK.bstForPowerLevels() <= 450 && oldEvos.size() == 0 && ((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0)){
                     oldEvos.add(null);
                     bstTarget = fromPK.bstForPowerLevels() + 100;
+                    gainedBonusEvolution.add(fromPK);
                 }
                 for (Evolution ev : oldEvos) {
                     // Pick a Pokemon as replacement
@@ -6636,7 +6638,12 @@ public abstract class AbstractRomHandler implements RomHandler {
                         (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.harborMail) ||
                         (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.retroMail)){
                     shop.items.remove(i);
-                    shop.items.add(i, Items.moonStone);
+                    if(this.generationOfPokemon() == 3) {
+                        shop.items.add(i, Gen3Items.moonStone);
+                    }
+                    else{
+                        shop.items.add(i, Items.moonStone);
+                    }
                 }
             }
         }
@@ -7543,7 +7550,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         }
     }
 
-    private Pokemon fullyEvolve(Pokemon pokemon, int trainerIndex) {
+    private Pokemon fullyEvolve(Pokemon pokemon, int trainerIndex, int level) {
         // If the fullyEvolvedRandomSeed hasn't been set yet, set it here.
         if (this.fullyEvolvedRandomSeed == -1) {
             this.fullyEvolvedRandomSeed = random.nextInt(GlobalConstants.LARGEST_NUMBER_OF_SPLIT_EVOS);
@@ -7553,7 +7560,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         seenMons.add(pokemon);
 
         while (true) {
-            if (pokemon.evolutionsFrom.size() == 0) {
+            if (pokemon.evolutionsFrom.size() == 0 || (level < 50 && gainedBonusEvolution.contains(pokemon))) {
                 // fully evolved
                 break;
             }
