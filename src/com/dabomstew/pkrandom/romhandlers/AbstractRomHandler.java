@@ -64,6 +64,7 @@ public abstract class AbstractRomHandler implements RomHandler {
     boolean CHAOS = false;
 
     private List<Pokemon> vanillaEvolvedPokemon;
+    private List<Pokemon> vanillaUnevolvedPokemon;
     private List<Pokemon> vanillaNonBaseLevelEvos;
     private List<Pokemon> under320Mons;
     private final int[] bannableEvolutionItems = {
@@ -2084,6 +2085,9 @@ public abstract class AbstractRomHandler implements RomHandler {
                 if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0) {
                     if(tp.level < forceUnevolvedLevel) {
                         bannedList.addAll(vanillaEvolvedPokemon);
+                    }
+                    else{
+                        bannedList.addAll(vanillaUnevolvedPokemon);
                     }
                     if(tp.level < 40){
                         tempNoLegendaries = true;
@@ -5944,6 +5948,7 @@ public abstract class AbstractRomHandler implements RomHandler {
 
     public void populateVanillaEvoInfo(){
         vanillaEvolvedPokemon = new ArrayList<>();
+        vanillaUnevolvedPokemon = new ArrayList<>();
         vanillaNonBaseLevelEvos = new ArrayList<>();
         under320Mons = new ArrayList<>();
         for(Pokemon p : getPokemon()){
@@ -5953,6 +5958,7 @@ public abstract class AbstractRomHandler implements RomHandler {
                 }
                 boolean baseLevelEvo = false;
                 if(p.evolutionsFrom.size() > 0){
+                    vanillaUnevolvedPokemon.add(p);
                     if(p.evolutionsTo.size() == 0){
                         for(Evolution e : p.evolutionsFrom){
                             if(e.type != EvolutionType.HAPPINESS && e.type != EvolutionType.HAPPINESS_DAY &&
