@@ -6466,7 +6466,12 @@ public abstract class AbstractRomHandler implements RomHandler {
                         (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.harborMail) ||
                         (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.retroMail)){
                     shop.items.remove(i);
-                    shop.items.add(i, Items.moonStone);
+                    if(this.generationOfPokemon() == 3) {
+                        shop.items.add(i, Gen3Items.moonStone);
+                    }
+                    else{
+                        shop.items.add(i, Items.moonStone);
+                    }
                 }
             }
         }
