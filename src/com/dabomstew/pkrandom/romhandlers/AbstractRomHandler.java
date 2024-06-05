@@ -69,9 +69,9 @@ public abstract class AbstractRomHandler implements RomHandler {
     private List<Pokemon> under320Mons;
     private List<Pokemon> over580Mons;
     private final int[] bannableEvolutionItems = {
-            Items.fireStone, Items.thunderStone, Items.waterStone, Items.leafStone, Items.shinyStone, Items.duskStone,
-            Items.dawnStone, Items.ovalStone, Items.deepSeaScale, Items.deepSeaTooth, Items.dragonScale, Items.sunStone,
-            Items.upgrade, Items.protector, Items.electirizer, Items.magmarizer, Items.dubiousDisc, Items.reaperCloth
+            Gen3Items.fireStone, Gen3Items.thunderstone, Gen3Items.waterStone, Gen3Items.leafStone, Gen3Items.shinyStone, Gen3Items.duskStone,
+            Gen3Items.dawnStone,  Gen3Items.deepSeaScale, Gen3Items.deepSeaTooth, Gen3Items.dragonScale, Gen3Items.sunStone,
+            Gen3Items.upGrade, Gen3Items.razorClaw, Gen3Items.razorFang, Gen3Items.iceStone, Gen3Items.dubiousDisc
     };
 
     /* Constructor */
