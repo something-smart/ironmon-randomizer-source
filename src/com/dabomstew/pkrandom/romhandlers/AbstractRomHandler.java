@@ -67,10 +67,14 @@ public abstract class AbstractRomHandler implements RomHandler {
     private List<Pokemon> vanillaUnevolvedPokemon;
     private List<Pokemon> vanillaNonBaseLevelEvos;
     private List<Pokemon> under320Mons;
-    private final int[] bannableEvolutionItems = {
+    private final int[] bannableEvolutionItemsGen4 = {
             Items.fireStone, Items.thunderStone, Items.waterStone, Items.leafStone, Items.shinyStone, Items.duskStone,
             Items.dawnStone, Items.ovalStone, Items.deepSeaScale, Items.deepSeaTooth, Items.dragonScale, Items.sunStone,
             Items.upgrade, Items.protector, Items.electirizer, Items.magmarizer, Items.dubiousDisc, Items.reaperCloth
+    };
+    private final int[] bannableEvolutionItemsGen3 = {
+            Gen3Items.fireStone, Gen3Items.thunderstone, Gen3Items.waterStone, Gen3Items.leafStone,
+            Gen3Items.deepSeaScale, Gen3Items.deepSeaTooth, Gen3Items.dragonScale, Gen3Items.sunStone, Gen3Items.upGrade
     };
 
     /* Constructor */
@@ -5533,7 +5537,7 @@ public abstract class AbstractRomHandler implements RomHandler {
             possibleItems.banRange(Items.figyBerry, 54);
         }
         if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
-            for (int i : bannableEvolutionItems) {
+            for (int i : generationOfPokemon() == 3 ? bannableEvolutionItemsGen3 : bannableEvolutionItemsGen4) {
                 possibleItems.banSingles(i);
             }
         }
@@ -5643,7 +5647,7 @@ public abstract class AbstractRomHandler implements RomHandler {
             possibleItems.banRange(Items.figyBerry, 54);
         }
         if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
-            for (int i : bannableEvolutionItems) {
+            for (int i : generationOfPokemon() == 3 ? bannableEvolutionItemsGen3 : bannableEvolutionItemsGen4) {
                 possibleItems.banSingles(i);
             }
         }
@@ -5677,7 +5681,7 @@ public abstract class AbstractRomHandler implements RomHandler {
             possibleItems.banRange(Items.figyBerry, 54);
         }
         if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
-            for (int i : bannableEvolutionItems) {
+            for (int i : generationOfPokemon() == 3 ? bannableEvolutionItemsGen3 : bannableEvolutionItemsGen4) {
                 possibleItems.banSingles(i);
             }
         }
@@ -6508,7 +6512,7 @@ public abstract class AbstractRomHandler implements RomHandler {
             possibleItems.banRange(Items.figyBerry, 54);
         }
         if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
-            for (int i : bannableEvolutionItems) {
+            for (int i : generationOfPokemon() == 3 ? bannableEvolutionItemsGen3 : bannableEvolutionItemsGen4) {
                 possibleItems.banSingles(i);
             }
         }
@@ -6621,7 +6625,7 @@ public abstract class AbstractRomHandler implements RomHandler {
             possibleItems.banRange(Items.figyBerry, 54);
         }
         if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0) {
-            for (int i : bannableEvolutionItems) {
+            for (int i : generationOfPokemon() == 3 ? bannableEvolutionItemsGen3 : bannableEvolutionItemsGen4) {
                 possibleItems.banSingles(i);
             }
         }
