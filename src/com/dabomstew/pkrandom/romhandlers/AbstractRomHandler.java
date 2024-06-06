@@ -6156,6 +6156,10 @@ public abstract class AbstractRomHandler implements RomHandler {
             moonStoneShop();
         }
 
+        if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0){
+            etherShop();
+        }
+
         checkPokemonRestrictions();
         List<Pokemon> pokemonPool;
         if (this.altFormesCanHaveDifferentEvolutions()) {
@@ -6644,6 +6648,24 @@ public abstract class AbstractRomHandler implements RomHandler {
                     else{
                         shop.items.add(i, Items.moonStone);
                     }
+                }
+            }
+        }
+        this.setShopItems(currentItems);
+    }
+
+    public void etherShop(){
+        Map<Integer, Shop> currentItems = this.getShopItems();
+        if (currentItems == null) return;
+        for (Shop shop: currentItems.values()) {
+            for (int i = 0; i < shop.items.size(); i++) {
+                if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.greatBall)){
+                    shop.items.remove(i);
+                    shop.items.add(i, Gen3Items.ether);
+                }
+                if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.ultraBall)){
+                    shop.items.remove(i);
+                    shop.items.add(i, Gen3Items.elixir);
                 }
             }
         }

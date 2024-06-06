@@ -3364,7 +3364,8 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
     public Map<Integer, Shop> getShopItems() {
         List<String> shopNames = Gen3Constants.getShopNames(romEntry.romType);
         List<Integer> mainGameShops = Arrays.stream(romEntry.arrayEntries.get("MainGameShops")).boxed().collect(Collectors.toList());
-        List<Integer> skipShops = Arrays.stream(romEntry.arrayEntries.get("SkipShops")).boxed().collect(Collectors.toList());
+        // List<Integer> skipShops = Arrays.stream(romEntry.arrayEntries.get("SkipShops")).boxed().collect(Collectors.toList());
+        List<Integer> skipShops = new ArrayList<>();
         Map<Integer, Shop> shopItemsMap = new TreeMap<>();
         int[] shopItemOffsets = romEntry.arrayEntries.get("ShopItemOffsets");
         for (int i = 0; i < shopItemOffsets.length; i++) {
