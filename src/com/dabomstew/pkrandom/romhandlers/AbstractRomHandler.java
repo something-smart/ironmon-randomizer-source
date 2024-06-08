@@ -6230,7 +6230,7 @@ public abstract class AbstractRomHandler implements RomHandler {
             for (Pokemon fromPK : pokemonPool) {
                 List<Evolution> oldEvos = originalEvos.get(fromPK);
                 int bstTarget = 0;
-                if(fromPK.bstForPowerLevels() <= 450 && oldEvos.size() == 0 && ((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0)){
+                if(fromPK.bstForPowerLevels() <= 450 && oldEvos.size() == 0 && ((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0) && !(fromPK.number == Species.shedinja)){
                     oldEvos.add(null);
                     bstTarget = fromPK.bstForPowerLevels() + 100;
                     gainedBonusEvolution.add(fromPK);
@@ -6659,13 +6659,17 @@ public abstract class AbstractRomHandler implements RomHandler {
         if (currentItems == null) return;
         for (Shop shop: currentItems.values()) {
             for (int i = 0; i < shop.items.size(); i++) {
-                if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.greatBall)){
+                if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.escapeRope)){
                     shop.items.remove(i);
                     shop.items.add(i, Gen3Items.ether);
                 }
-                if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.ultraBall)){
+                if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.greatBall)){
                     shop.items.remove(i);
                     shop.items.add(i, Gen3Items.elixir);
+                }
+                if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.ultraBall)){
+                    shop.items.remove(i);
+                    shop.items.add(i, Gen3Items.maxEther);
                 }
             }
         }
@@ -7582,7 +7586,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         seenMons.add(pokemon);
 
         while (true) {
-            if (pokemon.evolutionsFrom.size() == 0 || (level < 50 && gainedBonusEvolution.contains(pokemon))) {
+            if (pokemon.evolutionsFrom.size() == 0 || (gainedBonusEvolution.contains(pokemon))) {
                 // fully evolved
                 break;
             }
