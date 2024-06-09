@@ -3276,7 +3276,7 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
                         if(stoneEvos.get(pkmn).contains(evo)) {
                             if (evo == evoToKeep) {
                                 evo.type = EvolutionType.STONE;
-                                evo.extraInfo = Items.moonStone;
+                                evo.extraInfo = Gen3Items.moonStone;
                                 addEvoUpdateStone(impossibleEvolutionUpdates, evo, itemNames[evo.extraInfo]);
                             } else {
                                 toRemove.add(evo);
