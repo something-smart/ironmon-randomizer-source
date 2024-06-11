@@ -715,7 +715,18 @@ public abstract class AbstractRomHandler implements RomHandler {
                     evTo.ability2 = evFrom.ability2;
                     evTo.ability3 = evFrom.ability3;
                 }
-            });
+            },
+            (evFrom, evTo, toMonIsFinalEvo) -> {
+                if (evTo.ability1 != Abilities.wonderGuard
+                        && evTo.ability2 != Abilities.wonderGuard
+                        && evTo.ability3 != Abilities.wonderGuard) {
+                    evTo.ability1 = evFrom.ability1;
+                    evTo.ability2 = evFrom.ability2;
+                    evTo.ability3 = evFrom.ability3;
+                }
+            },
+            true
+                    );
         } else {
             List<Pokemon> allPokes = this.getPokemonInclFormes();
             for (Pokemon pk : allPokes) {
@@ -6131,7 +6142,7 @@ public abstract class AbstractRomHandler implements RomHandler {
                 else{
                     vanillaEvolvedPokemon.add(p);
                 }
-                if(!baseLevelEvo){
+                if(!baseLevelEvo || p.bstForPowerLevels() >= 500){
                     vanillaNonBaseLevelEvos.add(p);
                 }
             }
