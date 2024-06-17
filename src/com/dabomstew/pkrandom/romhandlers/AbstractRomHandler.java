@@ -68,6 +68,7 @@ public abstract class AbstractRomHandler implements RomHandler {
     private List<Pokemon> vanillaNonBaseLevelEvos;
     private List<Pokemon> under320Mons;
     private List<Pokemon> over580Mons;
+    private List<Pokemon> over500UnevolvedMons;
     private List<Pokemon> gainedBonusEvolution = new ArrayList<>();
     private final int[] bannableEvolutionItems = {
             Gen3Items.fireStone, Gen3Items.thunderstone, Gen3Items.waterStone, Gen3Items.leafStone, Gen3Items.shinyStone, Gen3Items.duskStone,
@@ -2222,6 +2223,10 @@ public abstract class AbstractRomHandler implements RomHandler {
                     if(tp.level >= 20 && !(forceFullyEvolved && tp.level >= forceFullyEvolvedLevel)){
                         bannedList.addAll(under320Mons);
                     }
+                    if(tp.level < 20){
+                        bannedList.addAll(over500UnevolvedMons);
+                    }
+                    bannedList.add(getPokemon().get(Species.eternatusE));
                 }
 
                 Pokemon newPK = pickTrainerPokeReplacement(
@@ -6117,6 +6122,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         vanillaNonBaseLevelEvos = new ArrayList<>();
         under320Mons = new ArrayList<>();
         over580Mons = new ArrayList<>();
+        over500UnevolvedMons = new ArrayList<>();
         for(Pokemon p : getPokemon()){
             if(p != null){
                 // System.out.println(p.name + ": " + p.bstForPowerLevels());
@@ -6137,6 +6143,9 @@ public abstract class AbstractRomHandler implements RomHandler {
                                 break;
                             }
                         }
+                    }
+                    if(p.bstForPowerLevels() >= 500){
+                        over500UnevolvedMons.add(p);
                     }
                 }
                 else{
