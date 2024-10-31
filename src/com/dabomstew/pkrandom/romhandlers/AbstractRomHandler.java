@@ -67,7 +67,7 @@ public abstract class AbstractRomHandler implements RomHandler {
     private List<Pokemon> vanillaUnevolvedPokemon;
     private List<Pokemon> vanillaNonBaseLevelEvos;
     private List<Pokemon> under320Mons;
-    private List<Pokemon> over580Mons;
+    private List<Pokemon> over570Mons;
     private List<Pokemon> over500UnevolvedMons;
     private List<Pokemon> gainedBonusEvolution = new ArrayList<>();
     private final int[] bannableEvolutionItems = {
@@ -2218,7 +2218,7 @@ public abstract class AbstractRomHandler implements RomHandler {
                         bannedList.addAll(vanillaUnevolvedPokemon);
                     }
                     if(tp.level < 40){
-                        bannedList.addAll(over580Mons);
+                        bannedList.addAll(over570Mons);
                     }
                     if(tp.level >= 20 && !(forceFullyEvolved && tp.level >= forceFullyEvolvedLevel)){
                         bannedList.addAll(under320Mons);
@@ -6121,7 +6121,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         vanillaUnevolvedPokemon = new ArrayList<>();
         vanillaNonBaseLevelEvos = new ArrayList<>();
         under320Mons = new ArrayList<>();
-        over580Mons = new ArrayList<>();
+        over570Mons = new ArrayList<>();
         over500UnevolvedMons = new ArrayList<>();
         for(Pokemon p : getPokemon()){
             if(p != null){
@@ -6129,8 +6129,8 @@ public abstract class AbstractRomHandler implements RomHandler {
                 if(p.bstForPowerLevels() < 320){
                     under320Mons.add(p);
                 }
-                if(p.bstForPowerLevels() >= 580){
-                    over580Mons.add(p);
+                if(p.bstForPowerLevels() >= 570){
+                    over570Mons.add(p);
                 }
                 boolean baseLevelEvo = false;
                 if(p.evolutionsFrom.size() > 0){
