@@ -2433,6 +2433,7 @@ public class Gen5RomHandler extends AbstractDSRomHandler {
         available |= MiscTweak.FIELD_TMS_100.getValue();
         available |= MiscTweak.REBALANCE_ENCOUNTERS.getValue();
         available |= MiscTweak.STRENGTH_SCALING.getValue();
+        available |= MiscTweak.STANDARDIZE_STONES.getValue();
         return available;
     }
 

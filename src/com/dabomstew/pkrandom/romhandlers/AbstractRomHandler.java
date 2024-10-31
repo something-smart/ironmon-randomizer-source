@@ -67,6 +67,7 @@ public abstract class AbstractRomHandler implements RomHandler {
     private List<Pokemon> vanillaUnevolvedPokemon;
     private List<Pokemon> vanillaNonBaseLevelEvos;
     private List<Pokemon> under320Mons;
+    private List<Pokemon> stoners;
     private final int[] bannableEvolutionItemsGen4 = {
             Items.fireStone, Items.thunderStone, Items.waterStone, Items.leafStone, Items.shinyStone, Items.duskStone,
             Items.dawnStone, Items.ovalStone, Items.deepSeaScale, Items.deepSeaTooth, Items.dragonScale, Items.sunStone,
@@ -765,6 +766,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         if (banIrregularAltFormes) {
             banned.addAll(getIrregularFormes());
         }
+
         // Assume EITHER catch em all OR type themed OR match strength for now
         if (catchEmAll) {
 
@@ -912,8 +914,46 @@ public abstract class AbstractRomHandler implements RomHandler {
         } else {
             // Entirely random
             for (EncounterSet area : scrambledEncounters) {
+                int minLevelInArea = 100;
+                for(Encounter e : area.encounters){
+                    if(e.level < minLevelInArea){
+                        minLevelInArea = e.level;
+                    }
+                }
+                // Poke-set
+                Set<Pokemon> inArea = pokemonInArea(area);
+                List<Pokemon> tempBanned = banned;
+                if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0) {
+                    if(minLevelInArea < 40){
+                        tempBanned = new ArrayList<>();
+                        tempBanned.addAll(banned);
+                        tempBanned.addAll(vanillaNonBaseLevelEvos);
+                    }
+                }
+                if(settings.getForcedWildType() != null){
+                    for(Pokemon p : getPokemonInclFormes()){
+                        if(p != null && !(p.primaryType == settings.getForcedWildType()) && !(p.secondaryType == settings.getForcedWildType()) && !banned.contains(p)){
+                            tempBanned.add(p);
+                        }
+                    }
+                }
+
+                List<Pokemon> baseAllowed = new ArrayList<>();
+                List<Pokemon> allowed = new ArrayList<>();
+                for(Pokemon p : allowAltFormes ? mainPokemonListInclFormes : mainPokemonList){
+                    if(!tempBanned.contains(p)){
+                        baseAllowed.add(p);
+                        allowed.add(p);
+                    }
+                }
+
                 for (Encounter enc : area.encounters) {
-                    enc.pokemon = pickEntirelyRandomPokemon(allowAltFormes, noLegendaries, area, banned);
+                    Pokemon picked = allowed.get(random.nextInt(allowed.size()));
+                    allowed.remove(picked);
+                    if(allowed.size() == 0){
+                        allowed = new ArrayList<>(baseAllowed);
+                    }
+                    enc.pokemon = picked;
                     setFormeForEncounter(enc, enc.pokemon);
                 }
             }
@@ -4374,6 +4414,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         }
         if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0){
             banned.addAll(vanillaNonBaseLevelEvos);
+            banned.addAll(stoners);
         }
         if(settings.getForcedWildType() != null){
             for(Pokemon p : getPokemonInclFormes()){
@@ -4428,6 +4469,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         }
         if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0){
             banned.addAll(vanillaNonBaseLevelEvos);
+            banned.addAll(stoners);
         }
         if(settings.getForcedWildType() != null){
             for(Pokemon p : getPokemonInclFormes()){
@@ -5965,6 +6007,7 @@ public abstract class AbstractRomHandler implements RomHandler {
         vanillaUnevolvedPokemon = new ArrayList<>();
         vanillaNonBaseLevelEvos = new ArrayList<>();
         under320Mons = new ArrayList<>();
+        stoners = new ArrayList<>();
         for(Pokemon p : getPokemon()){
             if(p != null){
                 if(p.bstForPowerLevels() < 320){
@@ -5978,7 +6021,9 @@ public abstract class AbstractRomHandler implements RomHandler {
                             if(e.type != EvolutionType.HAPPINESS && e.type != EvolutionType.HAPPINESS_DAY &&
                                     e.type != EvolutionType.HAPPINESS_NIGHT){
                                 baseLevelEvo = true;
-                                break;
+                            }
+                            if(e.type != EvolutionType.LEVEL){
+                                stoners.add(p);
                             }
                         }
                     }
@@ -6474,7 +6519,8 @@ public abstract class AbstractRomHandler implements RomHandler {
             for (int i = 0; i < shop.items.size(); i++) {
                 if((this.generationOfPokemon() == 4 && shop.items.get(i) == Items.mail1) || // Grass Mail
                         (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.harborMail) ||
-                        (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.retroMail)){
+                        (this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.retroMail) ||
+                        (this.generationOfPokemon() == 4 && shop.items.get(i) == Items.mail1)){ // Greet Mail
                     shop.items.remove(i);
                     if(this.generationOfPokemon() == 3) {
                         shop.items.add(i, Gen3Items.moonStone);
