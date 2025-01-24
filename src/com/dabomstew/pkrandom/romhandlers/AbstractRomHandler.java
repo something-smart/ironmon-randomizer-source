@@ -6178,6 +6178,7 @@ public abstract class AbstractRomHandler implements RomHandler {
 
         if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0){
             etherShop();
+            randomizeShopTMs();
         }
 
         checkPokemonRestrictions();
@@ -6690,6 +6691,29 @@ public abstract class AbstractRomHandler implements RomHandler {
                 if((this.generationOfPokemon() == 3 && shop.items.get(i) == Gen3Items.ultraBall)){
                     shop.items.remove(i);
                     shop.items.add(i, Gen3Items.maxEther);
+                }
+            }
+        }
+        this.setShopItems(currentItems);
+    }
+
+    public void randomizeShopTMs(){
+        Map<Integer, Shop> currentItems = this.getShopItems();
+        if (currentItems == null) return;
+        ArrayList<Integer> tmsAdded = new ArrayList<>();
+        for (Shop shop: currentItems.values()) {
+            for (int i = 0; i < shop.items.size(); i++) {
+                if((this.generationOfPokemon() == 3 && shop.items.get(i) >= Gen3Items.tm01 && shop.items.get(i) <= Gen3Items.tm50)){
+                    int tmVal = this.random.nextInt(50);
+                    while(tmsAdded.contains(tmVal)){
+                        tmVal = this.random.nextInt(50);
+                    }
+                    shop.items.remove(i);
+                    shop.items.add(i, Gen3Items.tm01 + tmVal);
+                    tmsAdded.add(tmVal);
+                    if(tmsAdded.size() == 50){
+                        tmsAdded = new ArrayList<>();
+                    }
                 }
             }
         }
