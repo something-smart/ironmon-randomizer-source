@@ -6179,6 +6179,9 @@ public abstract class AbstractRomHandler implements RomHandler {
         if((settings.getCurrentMiscTweaks() & MiscTweak.STRENGTH_SCALING.getValue()) > 0){
             etherShop();
             randomizeShopTMs();
+            if((settings.getCurrentMiscTweaks() & MiscTweak.STANDARDIZE_STONES.getValue()) > 0 && this instanceof Gen3RomHandler){
+                ((Gen3RomHandler)this).renameItem("MOON STONE", "ROGUESTONE");
+            }
         }
 
         checkPokemonRestrictions();

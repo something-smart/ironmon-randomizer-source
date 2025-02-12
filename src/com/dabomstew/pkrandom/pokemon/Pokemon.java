@@ -315,13 +315,17 @@ public class Pokemon implements Comparable<Pokemon> {
             Species.zygardeC, Species.arceus, Species.necrozmaU, Species.kyogreP, Species.groudonP, Species.mewtwoMegaX,
             Species.mewtwoMegaY, Species.rayquazaMega, Species.terapagosS, Species.eternatusE);
 
-    private static final List<Integer> strongLegendaries = Arrays.asList(Species.kyurem, Species.zacian, Species.zamazenta, Species.kyogre,
-            Species.groudon, Species.regigigas, Species.koraidon, Species.miraidon, Species.mewtwo, Species.lugia, Species.hoOh,
-            Species.rayquaza, Species.dialga, Species.dialgaO, Species.palkia, Species.palkiaO, Species.giratina, Species.giratinaO,
-            Species.reshiram, Species.zekrom, Species.xerneas, Species.yveltal, Species.hoopaU, Species.solgaleo, Species.lunala,
-            Species.necrozmaDM, Species.necrozmaDW, Species.calyrexI, Species.calyrexS, Species.eternatus, Species.latiasMega,
-            Species.latiosMega, Species.kyuremB, Species.kyuremW, Species.diancieMega, Species.zacianC, Species.zamazentaC,
-            Species.zygardeC, Species.arceus, Species.necrozmaU, Species.kyogreP, Species.groudonP, Species.mewtwoMegaX,
+    private static final List<Integer> strongLegendaries = Arrays.asList(Species.ampharosMega, Species.steelixMega, Species.aerodactylMega,
+            Species.gardevoirMega, Species.galladeMega, Species.wishiwashiS, Species.venusaurMega, Species.lucarioMega,
+            Species.blastoiseMega, Species.sceptileMega, Species.blazikenMega, Species.aggronMega, Species.charizardMegaX,
+            Species.charizardMegaY, Species.swampertMega, Species.gyaradosMega, Species.greninjaA, Species.palafinH, Species.kyurem,
+            Species.zacian, Species.zamazenta, Species.slaking, Species.kyogre, Species.groudon, Species.regigigas, Species.koraidon,
+            Species.miraidon, Species.mewtwo, Species.lugia, Species.hoOh, Species.rayquaza, Species.dialga, Species.dialgaO,
+            Species.palkia, Species.palkiaO, Species.giratina, Species.giratinaO, Species.reshiram, Species.zekrom, Species.xerneas,
+            Species.yveltal, Species.hoopaU, Species.solgaleo, Species.lunala, Species.necrozmaDM, Species.necrozmaDW, Species.calyrexI,
+            Species.calyrexS, Species.eternatus, Species.tyranitarMega, Species.salamenceMega, Species.metagrossMega, Species.latiasMega,
+            Species.latiosMega, Species.garchompMega, Species.kyuremB, Species.kyuremW, Species.diancieMega, Species.zacianC,
+            Species.zamazentaC, Species.zygardeC, Species.arceus, Species.necrozmaU, Species.kyogreP, Species.groudonP, Species.mewtwoMegaX,
             Species.mewtwoMegaY, Species.rayquazaMega, Species.terapagosS, Species.eternatusE);
 
     private static final List<Integer> ultraBeasts = Arrays.asList();

@@ -2607,6 +2607,37 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
         return Gen3Constants.hmMoves;
     }
 
+    public String readAbsolute(int offset, int length){
+        StringBuilder string = new StringBuilder();
+        for (int c = 0; c < length; c++) {
+            int currChar = rom[offset + c] & 0xFF;
+            if (tb[currChar] != null) {
+                string.append(tb[currChar]);
+            } else {
+                if (currChar == Gen3Constants.textVariable) {
+                    int nextChar = rom[offset + c + 1] & 0xFF;
+                    string.append("\\v").append(String.format("%02X", nextChar));
+                    c++;
+                } else {
+                    string.append("\\x").append(String.format("%02X", currChar));
+                }
+            }
+        }
+        return "\"" + string + "\"";
+    }
+
+    public void renameItem(String itemName, String newName){
+        int itemD = romEntry.getValue("ItemData");
+        int ientrySize = romEntry.getValue("ItemEntrySize");
+        for(int i = 0; i < romEntry.getValue("ItemCount"); i++){
+            if(readFixedLengthString(itemD + i*ientrySize, ientrySize).equals(itemName)){
+                System.out.println(readAbsolute(itemD + i*ientrySize, ientrySize));
+                writeFixedLengthString(newName, itemD + i*ientrySize, newName.length());
+                System.out.println(readAbsolute(itemD + i*ientrySize, ientrySize));
+            }
+        }
+    }
+
     @Override
     public void setTMMoves(List<Integer> moveIndexes) {
         if (!mapLoadingDone) {
