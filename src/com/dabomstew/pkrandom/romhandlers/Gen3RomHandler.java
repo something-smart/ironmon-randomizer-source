@@ -2631,9 +2631,7 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
         int ientrySize = romEntry.getValue("ItemEntrySize");
         for(int i = 0; i < romEntry.getValue("ItemCount"); i++){
             if(readFixedLengthString(itemD + i*ientrySize, ientrySize).equals(itemName)){
-                System.out.println(readAbsolute(itemD + i*ientrySize, ientrySize));
                 writeFixedLengthString(newName, itemD + i*ientrySize, newName.length());
-                System.out.println(readAbsolute(itemD + i*ientrySize, ientrySize));
             }
         }
     }
@@ -3287,14 +3285,25 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
             Map<Pokemon, List<Evolution>> stoneEvos = new HashMap<>();
             for (Pokemon pkmn : pokes) {
                 if (pkmn != null) {
+                    int genderSpecificEvoCount = 0;
                     List<Evolution> stonesTo = new ArrayList<>();
                     for (Evolution evo : pkmn.evolutionsFrom) {
                         if (evo.type == EvolutionType.STONE) {
                             stonesTo.add(evo);
                         }
+                        if (evo.type == EvolutionType.STONE_MALE_ONLY || evo.type == EvolutionType.STONE_FEMALE_ONLY){
+                            genderSpecificEvoCount++;
+                            stonesTo.add(evo);
+                            System.out.println(pkmn.name);
+                        }
                     }
                     if(stonesTo.size() > 0){
                         stoneEvos.put(pkmn, stonesTo);
+                        if(genderSpecificEvoCount > 1){
+                            for(Evolution evo : stonesTo){
+                                evo.type = EvolutionType.STONE;
+                            }
+                        }
                     }
                 }
             }
@@ -3306,7 +3315,9 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
                     for (Evolution evo : pkmn.evolutionsFrom) {
                         if(stoneEvos.get(pkmn).contains(evo)) {
                             if (evo == evoToKeep) {
-                                evo.type = EvolutionType.STONE;
+                                if(!(evo.type == EvolutionType.STONE_MALE_ONLY || evo.type == EvolutionType.STONE_FEMALE_ONLY)) {
+                                    evo.type = EvolutionType.STONE;
+                                }
                                 evo.extraInfo = Gen3Items.moonStone;
                                 addEvoUpdateStone(impossibleEvolutionUpdates, evo, itemNames[evo.extraInfo]);
                             } else {
