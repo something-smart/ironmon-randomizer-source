@@ -1805,7 +1805,6 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
     @Override
     public List<Trainer> getTrainers() {
         int baseOffset = romEntry.getValue("TrainerData");
-        System.out.println(baseOffset);
         int amount = romEntry.getValue("TrainerCount");
         int entryLen = romEntry.getValue("TrainerEntrySize");
         List<Trainer> theTrainers = new ArrayList<>();
@@ -3294,7 +3293,6 @@ public class Gen3RomHandler extends AbstractGBRomHandler {
                         if (evo.type == EvolutionType.STONE_MALE_ONLY || evo.type == EvolutionType.STONE_FEMALE_ONLY){
                             genderSpecificEvoCount++;
                             stonesTo.add(evo);
-                            System.out.println(pkmn.name);
                         }
                     }
                     if(stonesTo.size() > 0){

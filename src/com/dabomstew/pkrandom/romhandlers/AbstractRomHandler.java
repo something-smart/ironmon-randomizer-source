@@ -6137,11 +6137,8 @@ public abstract class AbstractRomHandler implements RomHandler {
                     vanillaUnevolvedPokemon.add(p);
                     if(p.evolutionsTo.size() == 0){
                         for(Evolution e : p.evolutionsFrom){
-                            if(e.type != EvolutionType.HAPPINESS && e.type != EvolutionType.HAPPINESS_DAY &&
-                                    e.type != EvolutionType.HAPPINESS_NIGHT){
-                                baseLevelEvo = true;
-                                break;
-                            }
+                            baseLevelEvo = true;
+                            break;
                         }
                     }
                     if(p.bstForPowerLevels() >= 500){
